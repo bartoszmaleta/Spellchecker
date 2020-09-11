@@ -67,15 +67,6 @@ public class HashTable {
      */
     public void remove(String s) {
         int index = getIndex(s);
-
-        for (int i = 0; i < table[index].size(); i++) {
-            if (table[index].get(i).equals(s))
-                table[index].remove(i);
-        }
-    }
-
-    public void remove2(String s) {
-        int index = getIndex(s);
         table[index].removeIf(word -> word.equals(s));
 
 //        for (Iterator<String> iterator = table[index].iterator(); iterator.hasNext();) {
