@@ -1,21 +1,33 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-public class HashTable
-{
+public class HashTable {
+    private final int numberOfBuckets;
+    private final List[] table;
+    private final StringHasher hasher;
+
+
     /**
      * The constructor is given a table size (i.e. how big to make the array)
      * and a StringHasher, which is used to hash the strings.
      *
      * @param tableSize number of elements in the hash array
-     *        hasher    Object that creates the hash code for a string
+     *                  hasher    Object that creates the hash code for a string
      * @see StringHasher
      */
-    public HashTable(int tableSize, StringHasher hasher)
-    {
-
+    public HashTable(int tableSize, StringHasher hasher) {
+        this.hasher = hasher;
+        this.numberOfBuckets = tableSize;
+        this.table = new ArrayList[numberOfBuckets];
+        fillTable();
     }
 
+    private void fillTable() {
+        for (int i = 0; i < numberOfBuckets; i++) {
+            table[i] = new ArrayList<>();
+        }
+    }
 
     /**
      * Takes a string and adds it to the hash table, if it's not already
@@ -23,9 +35,9 @@ public class HashTable
      *
      * @param s String to add
      */
-    public void add(String s)
-    {
-
+    public void add(String s) {
+        int index = getIndex(s);
+        table[index].add(s);
     }
 
 
@@ -35,9 +47,15 @@ public class HashTable
      *
      * @param s String to look up
      */
-    public boolean lookup(String s)
-    {
+    public boolean lookup(String s) {
+        int index = getIndex(s);
 
+        for (int i = 0; i < table[index].size(); i++) {
+            if (table[index].get(i).equals(s)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -47,7 +65,35 @@ public class HashTable
      *
      * @param s String to remove
      */
-    public void remove(String s)
-    {
+    public void remove(String s) {
+        int index = getIndex(s);
+
+        for (int i = 0; i < table[index].size(); i++) {
+            if (table[index].get(i).equals(s))
+                table[index].remove(i);
+        }
+    }
+
+    public void remove2(String s) {
+        int index = getIndex(s);
+        table[index].removeIf(word -> word.equals(s));
+
+//        for (Iterator<String> iterator = table[index].iterator(); iterator.hasNext();) {
+//            String word = iterator.next();
+//            if (word.equals(s)) {
+//                iterator.remove();
+//            }
+//        }
+    }
+
+    private int getIndex(String s) {
+        int hashCode = this.hasher.hash(s);
+        int index = hashCode % numberOfBuckets;
+//        if (index < 0) {
+//            index = index * -1;
+//        }
+//        return index;
+        return index < 0 ? index * -1 : index;
 
     }
+}
