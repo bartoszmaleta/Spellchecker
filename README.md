@@ -2,9 +2,10 @@ Have you ever thought how spellchecker works?
 
 Here's a complete project description: http://www.ics.uci.edu/~goodrich/teach/ics23/LabManual/LostForWords/
 
-Run "SpellCheck" to see options and build project.
-Go to "../spellchekcer/target/classes"
+1. Run "SpellCheck" to see options and build project.
+2. Go to "../spellchekcer/target/classes"
 
+3. Enter in terminal the appropriate command.
 
 Usage: java SpellCheck [options] inputFilename
 
